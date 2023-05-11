@@ -29,10 +29,12 @@ Flags, options and parameters:
     <action>         : [choice] action to perform  [options: push,pull,check,env,update]
                                   
 ### TIPS & EXAMPLES
-* use gitploy action1 to ...
-  gitploy action1
-* use gitploy action2 to ...
-  gitploy action2
+* use gitploy push to push code changes to Github/Bitbucket
+  gitploy push
+  gitploy -A push (automatic: push new files too)
+  gitploy -B laravel push (also run build scripts for laravel)
+* use gitploy pull to pull code changes from Github/Bitbucket
+  gitploy pull
 * use gitploy check to check if this script is ready to execute and what values the options/flags are
   gitploy check
 * use gitploy env to generate an example .env file
@@ -46,7 +48,10 @@ Flags, options and parameters:
 ## ⚡️ Examples
 
 ```bash
-> gitploy -h 
+> gitploy push 
+> gitploy pull
+> gitploy -A push
+> gitploy -B laravel push 
 # get extended usage info
 > gitploy env > .env
 # create a .env file with default values
