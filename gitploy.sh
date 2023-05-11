@@ -39,8 +39,10 @@ Script:main() {
 
   case "${action,,}" in
     push)
-      #TIP: use «$script_prefix push» to ...
+      #TIP: use «$script_prefix push» to push code changes to Github/Bitbucket
       #TIP:> $script_prefix push
+      #TIP:> $script_prefix -A push (automatic: push new files too)
+      #TIP:> $script_prefix -B laravel push (also run build scripts for laravel)
       check_git \
       && do_build push \
       && do_automatic push \
@@ -48,7 +50,7 @@ Script:main() {
       ;;
 
     pull)
-      #TIP: use «$script_prefix pull» to ...
+      #TIP: use «$script_prefix pull» to pull code changes from Github/Bitbucket
       #TIP:> $script_prefix pull
       check_git \
       && check_if_remote_updated \

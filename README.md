@@ -14,17 +14,19 @@ deploy websites
 
 ```
 Program : gitploy  by peter@forret.com
-Version : v0.0.1 (Apr 22 16:07:13 2023)
+Version : v0.1.0 (2023-05-11 16:31)
 Purpose : deploy websites
-Usage   : gitploy [-h] [-q] [-v] [-f] [-l <log_dir>] [-t <tmp_dir>] <action>
+Usage   : gitploy [-h] [-q] [-v] [-f] [-A] [-l <log_dir>] [-t <tmp_dir>] [-B <build>] <action>
 Flags, options and parameters:
     -h|--help        : [flag] show usage [default: off]
     -q|--quiet       : [flag] no output [default: off]
     -v|--verbose     : [flag] also show debug messages [default: off]
     -f|--force       : [flag] do not ask for confirmation (always yes) [default: off]
-    -l|--log_dir <?> : [option] folder for log files   [default: /Users/pforret/log/script]
-    -t|--tmp_dir <?> : [option] folder for temp files  [default: /tmp/script]
-    <action>         : [choice] action to perform  [options: action1,action2,check,env,update]
+    -A|--automatic   : [flag] always check in/out everything [default: off]
+    -l|--log_dir <?> : [option] folder for log files   [default: /home/pforret/log/gitploy]
+    -t|--tmp_dir <?> : [option] folder for temp files  [default: /tmp/gitploy]
+    -B|--build <?>   : [option] build scenario - uses ./build script
+    <action>         : [choice] action to perform  [options: push,pull,check,env,update]
                                   
 ### TIPS & EXAMPLES
 * use gitploy action1 to ...
