@@ -134,12 +134,14 @@ function do_automatic(){
 function do_git(){
     case "$1" in
     "push")
-    git commit -m "$(build_commit_message)"
-    git push
-    ;;
+    message="$(build_commit_message)"
+      IO:debug "Git commit message: '$message'"
+      git commit -m "$message)"
+      git push
+      ;;
     "pull")
-    git pull
-    ;;
+      git pull
+      ;;
     esac
 
 }
