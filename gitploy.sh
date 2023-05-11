@@ -51,6 +51,7 @@ Script:main() {
       #TIP: use «$script_prefix pull» to ...
       #TIP:> $script_prefix pull
       check_git \
+      && check_if_updated \
       && do_git pull \
       && do_build pull
       ;;
@@ -89,9 +90,28 @@ function check_git(){
   if [[ ! -d .git ]]; then
     IO:die "[$script_basename] not a git repo"
   fi
+  [[ -z "$(get_remote)" ]] && IO:die "[$script_basename] no remote repo"
   IO:debug "REMOTE: $(get_remote)"
   IO:debug "REPO  : $(get_repo_name)"
   IO:debug "BRANCH: $(get_branch)"
+}
+
+function check_if_updated(){
+  local remote
+  remote=$(get_remote)
+  local branch
+  branch=$(get_branch)
+  local local_commit
+  local_commit=$(git rev-parse HEAD)
+  local remote_commit
+  remote_commit=$(git ls-remote "$remote" "$branch" | awk '{print $1}')
+  if [[ "$local_commit" == "$remote_commit" ]]; then
+    IO:debug "No remote updates - nothing to do"
+    false
+  else
+    IO:debug "Remote updates available"
+    true
+  fi
 }
 
 function do_build(){
@@ -141,6 +161,7 @@ function get_branch(){
 function build_commit_message(){
   git status --short | awk '{printf $1 ":" $2 " "}'
 }
+
 #####################################################################
 ################### DO NOT MODIFY BELOW THIS LINE ###################
 #####################################################################
