@@ -51,7 +51,7 @@ Script:main() {
       #TIP: use «$script_prefix pull» to ...
       #TIP:> $script_prefix pull
       check_git \
-      && check_if_updated \
+      && check_if_remote_updated \
       && do_git pull \
       && do_build pull
       ;;
@@ -96,7 +96,7 @@ function check_git(){
   IO:debug "BRANCH: $(get_branch)"
 }
 
-function check_if_updated(){
+function check_if_remote_updated(){
   local remote
   remote=$(get_remote)
   local branch
