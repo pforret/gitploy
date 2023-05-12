@@ -125,7 +125,8 @@ function do_build(){
   [[ ! -d "$build_folder" ]] && IO:debug "No build folder $build_folder found" && return 0 # no build folder
   IO:debug "Found build folder: $build_folder"
 
-  local build_script="$build_folder/{$build}_{$mode}.sh"
+
+  local build_script="$build_folder/${build}_${mode}.sh"
   [[ ! -f "$build_script" ]] && IO:debug "No build script $build_script found" && return 0 # no build script
   IO:debug "Found build script: $build_script"
 
