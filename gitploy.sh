@@ -118,8 +118,14 @@ function check_if_remote_updated(){
 
 function do_build(){
   local mode="$1"
-  [[ ! -d "$script_install_folder/build/" ]] && return 0
-  find "$script_install_folder/build/" -type f -name "_$mode.sh" -exec {} \;
+  [[ -z "$build" ]] && return 0       # no build script defined
+  [[ ! -d "$script_install_folder/build/" ]] && return 0 # no build folder
+  build_script="$script_install_folder/build/{$build}_{$mode}.sh"
+  [[ ! -f "$build_script" ]] && return 0 # no build script
+  # shellcheck disable=SC2154
+  IO:log "[$script_basename] running build script $build_script"
+  # shellcheck disable=SC1090
+  source "$build_script"
 
 }
 
