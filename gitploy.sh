@@ -121,7 +121,7 @@ function do_build(){
   [[ -z "$build" ]] && return 0       # no build script defined
   IO:debug "Look for build scripts: $build"
 
-  local build_folder="$script_install_folder/build/"
+  local build_folder="$script_install_folder/build"
   [[ ! -d "$build_folder" ]] && IO:debug "No build folder $build_folder found" && return 0 # no build folder
   IO:debug "Found build folder: $build_folder"
 
