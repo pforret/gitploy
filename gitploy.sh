@@ -123,7 +123,8 @@ function do_build(){
   build_script="$script_install_folder/build/{$build}_{$mode}.sh"
   [[ ! -f "$build_script" ]] && return 0 # no build script
   # shellcheck disable=SC2154
-  IO:log "[$script_basename] running build script $build_script"
+  IO:progress "Execute build script $(basename "$build_script")"
+  IO:log "[$script_basename] execute build script $build_script"
   # shellcheck disable=SC1090
   source "$build_script"
 
