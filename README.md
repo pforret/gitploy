@@ -14,9 +14,9 @@ deploy websites
 
 ```
 Program : gitploy  by peter@forret.com
-Version : v0.1.0 (2023-05-11 16:31)
+Version : v0.2.0 (2023-09-27 18:34)
 Purpose : deploy websites
-Usage   : gitploy [-h] [-q] [-v] [-f] [-A] [-l <log_dir>] [-t <tmp_dir>] [-B <build>] <action>
+Usage   : gitploy [-h] [-q] [-v] [-f] [-A] [-l <log_dir>] [-t <tmp_dir>] [-F <FRAMEWORK>] [-H <HUGO_PORT>] [-J <JEKYLL_PORT>] [-L <LARAVEL_PORT>] [-M <MKDOCS_PORT>] <action>
 Flags, options and parameters:
     -h|--help        : [flag] show usage [default: off]
     -q|--quiet       : [flag] no output [default: off]
@@ -25,15 +25,23 @@ Flags, options and parameters:
     -A|--automatic   : [flag] always check in/out everything [default: off]
     -l|--log_dir <?> : [option] folder for log files   [default: /home/pforret/log/gitploy]
     -t|--tmp_dir <?> : [option] folder for temp files  [default: /tmp/gitploy]
-    -B|--build <?>   : [option] build scenario - uses ./build script
-    <action>         : [choice] action to perform  [options: push,pull,check,env,update]
-                                  
+    -F|--FRAMEWORK <?>: [option] laravel/mkdocs/jekyll/hugo (default: autodetect))
+    -H|--HUGO_PORT <?>: [option] hugo runs on port  [default: 1313]
+    -J|--JEKYLL_PORT <?>: [option] jekyll runs on port  [default: 8000]
+    -L|--LARAVEL_PORT <?>: [option] laravel runs on port  [default: 8000]
+    -M|--MKDOCS_PORT <?>: [option] mkdocs runs on port  [default: 4000]
+    <action>         : [choice] action to perform  [options: push,pull,install,serve,check,env,update]
+                                  pforret:pforret/gitploy.git
 ### TIPS & EXAMPLES
-* use gitploy push to push code changes to Github/Bitbucket
+* use gitploy push to push code changes to GitHub/Bitbucket
   gitploy push
   gitploy -A push (automatic: push new files too)
-  gitploy -B laravel push (also run build scripts for laravel)
-* use gitploy pull to pull code changes from Github/Bitbucket
+  gitploy -F laravel push (also run build scripts for laravel)
+* use gitploy pull to pull code changes from GitHub/Bitbucket
+  gitploy pull
+* use gitploy install to install project dependencies (run first time)
+  gitploy install
+* use gitploy pull to serve website
   gitploy pull
 * use gitploy check to check if this script is ready to execute and what values the options/flags are
   gitploy check
@@ -51,7 +59,7 @@ Flags, options and parameters:
 > gitploy push 
 > gitploy pull
 > gitploy -A push
-> gitploy -B laravel push 
+> gitploy -F laravel push 
 # get extended usage info
 > gitploy env > .env
 # create a .env file with default values
