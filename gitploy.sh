@@ -25,7 +25,7 @@ option|l|log_dir|folder for log files |$HOME/log/$script_prefix
 option|t|tmp_dir|folder for temp files|/tmp/$script_prefix
 option|F|FRAMEWORK|laravel/mkdocs/jekyll/hugo (default: autodetect))|
 option|H|HUGO_PORT|hugo runs on port|1313
-option|J|JEKYLL_PORT|jekyll runs on port|8000
+option|J|JEKYLL_PORT|jekyll runs on port|4000
 option|L|LARAVEL_PORT|laravel runs on port|8000
 option|M|MKDOCS_PORT|mkdocs runs on port|4000
 choice|1|action|action to perform|push,pull,install,serve,check,env,update
