@@ -23,8 +23,12 @@ flag|f|force|do not ask for confirmation (always yes)
 flag|A|automatic|always check in/out everything
 option|l|log_dir|folder for log files |$HOME/log/$script_prefix
 option|t|tmp_dir|folder for temp files|/tmp/$script_prefix
-option|B|build|build scenario - uses ./build script|
-choice|1|action|action to perform|push,pull,check,env,update
+option|F|FRAMEWORK|laravel/mkdocs/jekyll/hugo (default: autodetect))|
+option|H|HUGO_PORT|hugo runs on port|1313
+option|J|JEKYLL_PORT|jekyll runs on port|8000
+option|L|LARAVEL_PORT|laravel runs on port|8000
+option|M|MKDOCS_PORT|mkdocs runs on port|4000
+choice|1|action|action to perform|push,pull,install,serve,check,env,update
 " -v -e '^#' -e '^\s*$'
 }
 
@@ -39,10 +43,10 @@ Script:main() {
 
   case "${action,,}" in
     push)
-      #TIP: use «$script_prefix push» to push code changes to Github/Bitbucket
+      #TIP: use «$script_prefix push» to push code changes to GitHub/Bitbucket
       #TIP:> $script_prefix push
       #TIP:> $script_prefix -A push (automatic: push new files too)
-      #TIP:> $script_prefix -B laravel push (also run build scripts for laravel)
+      #TIP:> $script_prefix -F laravel push (also run build scripts for laravel)
       check_git \
       && do_build push \
       && do_automatic push \
@@ -50,12 +54,24 @@ Script:main() {
       ;;
 
     pull)
-      #TIP: use «$script_prefix pull» to pull code changes from Github/Bitbucket
+      #TIP: use «$script_prefix pull» to pull code changes from GitHub/Bitbucket
       #TIP:> $script_prefix pull
       check_git \
       && check_if_remote_updated \
       && do_git pull \
       && do_build pull
+      ;;
+
+    install)
+      #TIP: use «$script_prefix install» to install project dependencies (run first time)
+      #TIP:> $script_prefix install
+      do_build install
+      ;;
+
+    serve)
+      #TIP: use «$script_prefix pull» to serve website
+      #TIP:> $script_prefix pull
+      do_build serve
       ;;
 
     check | env)
@@ -118,15 +134,18 @@ function check_if_remote_updated(){
 
 function do_build(){
   local mode="$1"
-  [[ -z "$build" ]] && return 0       # no build script defined
-  IO:debug "Look for build scripts: $build"
+  ## if empty => autodetect
+  [[ -z "$FRAMEWORK" ]] && FRAMEWORK=$(detect_framework)
+  ## if not found => exit
+  [[ -z "$FRAMEWORK" ]] && IO:die "no framework detected"       # no build script defined
+  IO:debug "Look for build scripts: $FRAMEWORK"
 
-  local build_folder="$script_install_folder/build"
-  [[ ! -d "$build_folder" ]] && IO:debug "No build folder $build_folder found" && return 0 # no build folder
-  IO:debug "Found build folder: $build_folder"
+  local builds_folder="$script_install_folder/build"
+  [[ ! -d "$builds_folder" ]] && IO:debug "No build folder $builds_folder found" && return 0 # no build folder
+  IO:debug "Found build folder: $builds_folder"
 
 
-  local build_script="$build_folder/${build}_${mode}.sh"
+  local build_script="$builds_folder/${FRAMEWORK}_${mode}.sh"
   [[ ! -f "$build_script" ]] && IO:debug "No build script $build_script found" && return 0 # no build script
   IO:debug "Found build script: $build_script"
 
@@ -184,6 +203,15 @@ function build_commit_message(){
   git status --short | awk '{printf $1 ":" $2 " "}'
 }
 
+
+function detect_framework(){
+  [[ -f artisan ]] && echo "laravel" && return 0
+  [[ -f _config.yml ]] && echo "jekyll" && return 0
+  [[ -f mkdocs.yml ]] && echo "mkdocs" && return 0
+  [[ -f hugo.toml ]] && echo "hugo" && return 0
+  [[ -f hugo.yaml ]] && echo "hugo" && return 0
+  [[ -f hugo.json ]] && echo "hugo" && return 0
+}
 #####################################################################
 ################### DO NOT MODIFY BELOW THIS LINE ###################
 #####################################################################
